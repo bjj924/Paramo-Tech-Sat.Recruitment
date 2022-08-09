@@ -5,7 +5,6 @@
 namespace Sat.Recruitment.Negocio.UserLogic
 {
     using System;
-    using System.Collections.Generic;
     using Sat.Recruitment.Model.Interfaces.UsersLogic;
     using Sat.Recruitment.Model.Models;
 
