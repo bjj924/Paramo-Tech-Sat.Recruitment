@@ -1,18 +1,19 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+// <copyright file="Startup.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Sat.Recruitment.Api
 {
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Newtonsoft.Json.Serialization;
+    using Sat.Recruitment.Model.Interfaces.UsersLogic;
+    using Sat.Recruitment.Negocio.Helpers.User;
+    using Sat.Recruitment.Negocio.UserLogic;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -27,6 +28,19 @@ namespace Sat.Recruitment.Api
         {
             services.AddControllers();
             services.AddSwaggerGen();
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.
+            Json.ReferenceLoopHandling.Ignore)
+            .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver
+            = new DefaultContractResolver());
+
+            services.AddScoped<IUserLogic, UserLogic>();
+            services.AddScoped<IReadFile, ReadFile>();
+            services.AddScoped<IValidateUser, ValidateUser>();
+            services.AddScoped<IUserType, UserType>();
+
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
